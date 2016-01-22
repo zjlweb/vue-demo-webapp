@@ -14,7 +14,7 @@ config.vue.loaders = {
 }
 config.output = {
     path: path.resolve(__dirname, '../dist/static'),
-    publicPath: 'http://code.feitai.me/vue-demo2/static/',  // 修改cdn路径
+    publicPath: '/static/',  // 修改cdn路径
     filename: 'build.js'
   }
 // http://vuejs.github.io/vue-loader/workflow/production.html

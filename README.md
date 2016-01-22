@@ -1,5 +1,5 @@
 # vue-demo-webapp
-vue-demo webapp商城启动基础组件
+vue-demo webapp商城启动基础组件，基于vue-cli组件修改
 
 ## vue.js + vue-router + vue-resource + fastclick.js 
 

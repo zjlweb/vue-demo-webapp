@@ -10,7 +10,8 @@ export default function(router){
         },
 		'/list':{
 			name: 'list',
-			component:require('./views/list.vue')
+			component:require('./views/list.vue'),
+			bodyClass: 'list-bg'
 		},
 		'/detail/:id':{
 			name: 'detail',
@@ -27,6 +28,10 @@ export default function(router){
 		'/cuxiao':{
 			name: 'cuxiao',
 			component:require('./views/cuxiao.vue')
+		},
+		'/details/:id':{
+			name: 'details',
+			component:require('./views/details.vue')
 		},
 		'/ucenter':{
 			name: 'ucenter',

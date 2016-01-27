@@ -21,7 +21,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel!eslint',
+        // loader: 'babel!eslint',query: {compact: false},
+        loader: 'babel', query: {compact: false},
         exclude: /node_modules/
       },
       {

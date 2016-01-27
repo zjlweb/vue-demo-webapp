@@ -29,7 +29,7 @@
 	<div class="cart-list"  v-if="cartlist.length != 0">
 		<div class="clearfix">
 			<div class="pull-left">
-				<label class="checkbox-label" for="all" @click="checkboxs('all')"><input type="checkbox" class="" v-model="list.isDefault" id="all"></label>删除选中
+				<label class="checkbox-label" for="all" @click="checkboxs('all')"><input type="checkbox" class="" v-model="list.isDefault" id="all"></label><span @click="chooseDell">删除选中</span>
 			</div>
 			<div class="pull-right price-color" @click="delAll">
 				清空购物车
@@ -46,11 +46,11 @@
 	</div>
 	<div class="bot-bar" v-if="cartlist.length != 0">
 		<div class="pull-left">
-			<span>合计： 12323</span>
+			<span class="total">合计： 12323</span>
 		</div>
 		<div class="pull-right settlement-btn" :class="islock" @click="settlement"><span class="">结算(2)</span></div>
 	</div>
-	<nv-alert :content="alert.txt" :show="alert.show" :class="alert.type" :confirm-content="confirm.txt" :confirm-show="confirm.show" :confirm-func="comfirm"></nv-alert>
+	<nv-alert :content="alert.txt" :show="alert.show" :alert-type="alert.type" :confirm-content="confirm.txt" :confirm-show="confirm.show"></nv-alert>
 </template>
 
 <script>
@@ -61,6 +61,7 @@
 				times: null,
 				checkedAll: false,
 				islock: 'islock',
+				callback: null,
 				alert: {
                     txt: '',
                     show: false,
@@ -75,7 +76,7 @@
                 confirm: {
                 	txt: '',
                 	show: false,
-                	okCallback: ''
+                	okCallback:null
                 	
                 },
                 cartlist: []
@@ -102,21 +103,6 @@
 	    			list.num = 1;	
 	    		}
 	    		console.log(list.num +'---' + typeof list.num);
-	    	},
-	    	delGoods (){
-	    		let self = this;
-	    		if(!self.checkedAll){
-	    			self.alert.txt = '请选择所要删除的商品！';
-	    			self.alert.type = 'alert';
-		    		self.alert.show = true;
-		    		self.alert.hideFn();
-	    		}else{
-	    			self.alert.txt = '删除成功！';
-	    			self.alert.type = 'seccess';
-		    		self.alert.show = true;
-		    		self.alert.hideFn();
-	    		}
-	    		return;
 	    	},
 	    	addNum (list){
 	    		let self = this;
@@ -161,10 +147,8 @@
 	    	},
 	    	checkboxs (list){
 	    		let self = this;
-	    		console.log(event)
 	    		let flag = false;
 	    		if(list === 'all'){
-	    				console.log(event.target.checked);
 	    				self.cartlist.forEach(function(e){
 	    					if(!event.target.checked){
 	    						e.isDefault = false;
@@ -177,30 +161,48 @@
 	    				
 	    			}else{
 
-
 	    				list.isDefault = !list.isDefault;
-	    				console.log(self.cartlist);
-
-	    				
-	    			
 					}
-	    		
-	    		// 
 	    			
 	    	},
 	    	del (list){
-	    		console.log(list.pid);
 	    		let self =this;
 	    		self.confirm.show = true;
-	    		self.confirm.txt ="是否删除选择商品？";
-	    		self.confirm.okCallback(function(){
-	    			alert('sss');
-	    		})
+	    		self.confirm.txt ="是否删除该商品？";
+	    		self.confirm.okCallback = function(){
+	    			alert('你选择的是「yes」');
+	    		};
+	    	},
+	    	chooseDell (){
+	    		let self = this;
+	    		let option = false;
+	    		for (var i = 0; i < self.cartlist.length; i++) {
+	    			if(self.cartlist[i].isDefault === true){
+		    			option = true;
+		    			break;	    		
+	    			}	
+	    		};
+	    	
+	    		if(!option){
+	    			self.alert.txt = '请选择所要删除的商品！';
+	    			self.alert.type = 'alert';
+		    		self.alert.show = true;
+		    		self.alert.hideFn();
+	    		}else{
+	    			self.confirm.show = true;
+		    		self.confirm.txt ="是否删除所选择商品？";
+		    		self.confirm.okCallback = function(){
+		    			alert('你选择的是「yes」');
+		    		};
+	    		}
 	    	},
 	    	delAll (){
 	    		let self = this;
 	    		self.cartlist = '';
-	    		
+	    		self.alert.txt = '购物车已清空！';
+    			self.alert.type = 'info';
+	    		self.alert.show = true;
+	    		self.alert.hideFn();
 	    	},
 	    	settlement (){
 	    		let self = this;
@@ -213,14 +215,12 @@
 			"nvAlert":require('../components/alert.vue')
 		},
 		events: {
-			
-		    'oncancel': function (msg) {
+		    'oncancel': function () {
 		        this.confirm.show = false;
 		    },
-		    'onconfirm': function (msg) {
-		        alert('ss')
-		  
-		        this.confirm.show = false;
+		    'onconfirm': function () {
+		       this.confirm.show = false;
+		       this.confirm.okCallback();
 		    },
 		    'quitConfirm': function(){
 		    	this.confirm.show = false;
@@ -230,6 +230,9 @@
 </script>
 <style lang="sass">
 @import "../assets/sass/config.scss";
+#app{
+	counter-reset: icecream;
+}
 .cart-list{
     border:1px solid $border-color;
     background-color: #fff;
@@ -335,6 +338,13 @@
 			padding: 0 px2rem(15);
 			color:#666;
 			font-weight:bold;
+			&:first-child{
+				border-radius:3px 0 0 3px;
+			}
+			&:last-child{
+				border-radius:0 3px 3px 0;
+
+			}
 		}
 		button[disabled="true"]{background-color:#eee;color:#ddd;}
 		input{
@@ -343,9 +353,9 @@
 			background-color:#fff;
 			height: px2rem(40);
 			width: px2rem(60);
-
-			border-left:none;
-			border-right:none;
+			border-radius:0;
+			border-left:0;
+			border-right:0;
 
 		}
 	}
@@ -366,7 +376,7 @@
 		vertical-align: top;
 		&:focus{outline: none;}
 		&:checked{
-			border:1px solid $themes-color;
+			border:1px solid $themes-color;counter-increment: icecream;
 		}
 		&:checked:before{
 			content: '';
@@ -386,7 +396,11 @@
 		}
 		
 	}
+	.total:after{
 
+content: counter(icecream);
+
+	}
 
 
 </style>

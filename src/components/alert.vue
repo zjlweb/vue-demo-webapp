@@ -1,9 +1,9 @@
 <template>
-    <div class="alert-loading" :class="alertType" v-show="show" transition>
+    <div class="alert-loading" :class="{'alert': alertType=='alert','info': alertType=='info'}" v-show="show" transition>
         <div  class="alert-inner" v-text="content"></div>
     </div>
 
-    <div class="confirm-dialog" v-show="confirmShow">
+    <div class="confirm-dialog" v-show="confirmShow" transition>
     <div class="ui-mask" @click="quit()"></div>
     <div class="confirm-box">
         <div class="confirm-title">
@@ -13,8 +13,8 @@
             <div v-text="confirmContent"></div>
         </div>
         <div class="confirm-bot">
-            <a href="javascript:;" class="confirm-btn default" @click="dispatch($event,  'oncancel')">取消</a>
-            <a href="javascript:;" class="confirm-btn primary" @click="dispatch($event, 'onconfirm')">确定</a>
+            <a href="javascript:;" class="confirm-btn default" @click="dispatch('oncancel')">取消</a>
+            <a href="javascript:;" class="confirm-btn primary" @click="dispatch('onconfirm')">确定</a>
         </div>
     </div>
 </div>
@@ -23,15 +23,18 @@
 <script>
     export default {
         replace: true,
-        props: ['content','show','alertType','confirmShow','confirmContent','confirmFunc'],
+        props: ['content','show','alertType','confirmShow','confirmContent'],
+     
         ready (){
             setTimeout(function(){
             document.getElementById('loading').style.display = 'none';
-          },200)
+          },200);
+            
         },
         methods:{
-          dispatch(event, eventStr) {
+          dispatch(eventStr) {
               this.$dispatch(eventStr);
+              // console.log(msg);
               // this.show = false;
           },
           quit(){
@@ -101,6 +104,10 @@ background-color:rgb(77, 130, 214);
     &.alert .alert-inner {
              background-color: #FF8E32;
         }
+     &.info .alert-inner {
+             background-color: red;
+        }
+
 
 
     .alert-inner {

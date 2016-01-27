@@ -4,6 +4,7 @@ import VueResource from 'vue-resource'
 import attachFastClick from 'fastclick'
 import routerMap from './router'
 import filters from './filters'
+import swiper from './swiper'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -28,6 +29,7 @@ router.beforeEach(transition => {
         attachFastClick.attach(document.body);
     }, false);
     //登录授权
+    
     if (transition.to.auth) {
         if (localStorage.loginStatus) {
             transition.next();
@@ -37,6 +39,11 @@ router.beforeEach(transition => {
         }
     } else {
         transition.next();
+    }
+    if(transition.to.bodyClass){
+        document.body.classList.add(transition.to.bodyClass);
+    }else{
+        document.body.setAttribute('class', '');
     }
 })
 

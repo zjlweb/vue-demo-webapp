@@ -1,18 +1,10 @@
 <template>
 	<nv-head page-title="个人中心" back-bar="true" page-link=""></nv-head>	
-	<div class="draggable-header-view"
-    @mousedown="startDrag" @touchstart="startDrag"
-    @mousemove="onDrag" @touchmove="onDrag"
-    @mouseup="stopDrag" @touchend="stopDrag" @mouseleave="stopDrag">
-    <svg class="bg" width="100%" height="100%">
-      <path :d="headerPath" fill="#ff6600"></path>
-    </svg>
-    <div class="header">
+    <div class="ucenter-header">
       	<div class="face">
       	</div>
     </div>
-    <div class="content" :style="contentPosition">
-       	<ul class="ui-list offset-left ucenter-list">
+    <ul class="ui-list offset-left ucenter-list">
 		<li v-link="{path: '/ucenter/collect' }" class="cell arrow-right"><span class="iconfont">&#xe607;</span>我的收藏</li>
 		<li v-link="{path: '/ucenter/order' }" class="cell arrow-right"><span class="iconfont">&#xe614;</span>我的订单</li>
 		<li v-link="{path: '/ucenter/balance' }" class="cell arrow-right"><span class="iconfont">&#xe61b;</span>我的余额</li>
@@ -26,79 +18,25 @@
 	<div class="inner">
 		<a class="button btn-full-width btn-empty" @click="quit">退出登录</a>
 	</div>
-    </div>
-  </div>
+    
+
 
 	<nv-alert></nv-alert>
 </template>
 
 <script>
 	export default {
-		data (){
-			return {
-				dragging: false,
-			      // quadratic bezier control point
-			      c: { x: 280, y: 280 },
-			      // record drag start point
-			      start: { x: 0, y: 0 }
-			}
-		},
-		computed: {
-    headerPath: function () {
-      return 'M0,0 L750,0 750,280' +
-        'Q' + this.c.x + ',' + this.c.y +
-        ' 0,280'
-    },
-    contentPosition: function () {
-      var dy = this.c.y - 280
-      var dampen = dy > 0 ? 2 : 4
-      return {
-        transform: 'translate3d(0,' + dy / dampen + 'px,0)'
-      }
-    }
-  },
-	  components: {
-	    "nvHead":require('../components/header.vue'),
-	    "nvAlert":require('../components/alert.vue')
-	  },
-	  methods: {
-	  	quit (){
-	  		let self = this;
-            localStorage.removeItem('loginStatus');
-            self.$route.router.go('/');
-	  	},
-	  	
-	  	startDrag: function (e) {
-      e = e.changedTouches ? e.changedTouches[0] : e
-      this.dragging = true
-      this.start.x = e.pageX
-      this.start.y = e.pageY
-    },
-    onDrag: function (e) {
-      e = e.changedTouches ? e.changedTouches[0] : e
-      if (this.dragging) {
-        this.c.x = 280 + (e.pageX - this.start.x)
-        // dampen vertical drag by a factor
-        var dy = e.pageY - this.start.y
-        var dampen = dy > 0 ? 1.5 : 4
-        this.c.y = 280 + dy / dampen
-      }
-    },
-    stopDrag: function () {
-      if (this.dragging) {
-        this.dragging = false
-        dynamics.animate(this.c, {
-          x: 280,
-          y: 280
-        }, {
-          type: dynamics.spring,
-          duration: 700,
-          friction: 280
-        })
-      }
-    }
-  
-	  }
+	  	components: {
+		    "nvHead":require('../components/header.vue'),
+		    "nvAlert":require('../components/alert.vue')
+	 	},
+	  	methods: {
+	  		quit (){
+		  		let self = this;
+	            localStorage.removeItem('loginStatus');
+	            self.$route.router.go('/');
+		  	}
+	    }
 	}
 </script>
 <style lang="sass">
@@ -162,39 +100,14 @@
 	.ellipsis2{
 		@include ellipsis(2);
 	}
-.draggable-header-view {
-	position:absolute;
-  width: 100%;
-  bottom:0;
-  top: px2rem(100);
-  overflow: hidden;
-  margin: 0 auto 20px; 
-  color: #fff;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.draggable-header-view .bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  bottom:0;
-}
-.draggable-header-view .header, .draggable-header-view .content {
-  position: relative;
-  z-index: 1;
-}
-.draggable-header-view .header {
-  height: 280px;margin-bottom: px2rem(20);overflow: hidden;
-}
-.draggable-header-view .content {
-  color: #333;
-  line-height: 1.5em;
-}
+	.ucenter-header{
+		background-color:$themes-color;
+		overflow: hidden;
+		margin-bottom: px2rem(20);
+	}
 .face{
-	width: 180px;height: 180px;
+	@include px2rem(width,180px);
+	@include px2rem(height,180px);
 	background-color:#fff;
 	border-radius:100%;
 	margin: 50px auto;
@@ -202,8 +115,8 @@
 	overflow: hidden;
 	border:2px solid #fff;
 	background:#fff url(../assets/images/face.jpg) no-repeat;
-	-webkit-background-size:100% auto;
-	background-size:100% auto;
+	-webkit-background-size:100% 100%;
+	background-size:100% 100%;
 	img{
 		max-width:100%;
 		height: 100%;

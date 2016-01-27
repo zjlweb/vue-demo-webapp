@@ -1,7 +1,14 @@
 <template>
- <div class="section-block">
-    <img class="logo" src="../assets/images/logo.png">
-  </div>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">Slide 1</div>
+            <div class="swiper-slide">Slide 2</div>
+            <div class="swiper-slide">Slide 3</div>
+            <div class="swiper-slide">Slide 4</div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
   <div class="section-block">
       <ul class="navbar">
         <li v-link="{ path:'/list',exact: true}"><i class="iconfont">&#xe619;</i>商品列表</li>
@@ -44,9 +51,19 @@
 
 
 export default {
+  route:{
+            data (transition){
+              
+            }
+        },
   ready (){
-         
-      
+    var swiper = new Swiper('.swiper-container', {
+                  pagination: '.swiper-pagination',
+                  paginationClickable: true,
+                  spaceBetween: 10,
+                  autoplay: 2500,
+                  loop: true
+              });
   },
   components: {
    
@@ -62,6 +79,113 @@ export default {
 </script>
 <style lang="sass">
 @import "../assets/sass/base.scss";
+.swiper-container{
+  width: 100%;
+  height: px2rem(380);
+  position:relative;
+  overflow: hidden;
+      margin-left: auto;
+    margin-right: auto;
+
+}
+.swiper-slide{
+  text-align: center;
+    background: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+        -webkit-flex-shrink: 0;
+    -ms-flex: 0 0 auto;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.swiper-wrapper {
+      position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-transition-property: -webkit-transform;
+    -o-transition-property: -o-transform;
+    -ms-transition-property: -ms-transform;
+    transition-property: transform;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    -webkit-transform: translate3d(0,0,0);
+    -o-transform: translate(0,0);
+    -ms-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  .swiper-slide:first-child{
+    background-color:#ED5564;
+  }
+  .swiper-slide:nth-child(2){
+    background-color:#FFCE55;
+  }
+  .swiper-slide:nth-child(3){
+    background-color:#A0D468;
+  }
+  .swiper-slide:nth-child(4){
+    background-color:#5D9CEC;
+  }
+  .swiper-slide:nth-child(5){
+    background-color:#AC92ED;
+  }
+  .swiper-slide:nth-child(6){
+    background-color:#A0D468;
+  }
+  .swiper-slide:nth-child(7){
+    background-color:#FFCE55;
+  }
+  .swiper-slide:nth-child(8){
+    background-color:#AC92ED;
+  }
+  .swiper-slide:last-child{
+    background-color:#FB6E52;
+  }
+
+}
+.swiper-pagination{
+  position: absolute;
+    text-align: center;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    -webkit-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    margin:0 3px;
+    border-radius: 100%;
+    background: #000;
+    opacity: .2;
+}
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #666;
+}
 .dd{
   height: 300px;
   background: url(../assets/logo.png) no-repeat center center;
